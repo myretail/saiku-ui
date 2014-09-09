@@ -142,20 +142,20 @@
 <script type="text/javascript">
 
 var myClient = new SaikuClient({
-    server: "/saiku",
+    server: "",
     path: "/rest/saiku/embed",
     user: "admin",
     password: "admin"
 });
 
 myClient.execute({
-    file: "Examples/ConditionalFormattingExample2.saiku",
+    file: "demo.saiku",
     htmlObject: "#saiku3",
     render: "table"
 });
 
 myClient.execute({
-    file: "Examples/Heatgrid.saiku",
+    file: "demo.saiku",
     htmlObject: "#saiku2",
     render: "chart",
     mode: "heatgrid",
@@ -171,7 +171,7 @@ myClient.execute({
 });
 
 myClient.execute({
-    file: "Examples/pie.saiku",
+    file: "demo.saiku",
     htmlObject: "#saiku",
     render: "chart",
     mode: "stackedBar",
