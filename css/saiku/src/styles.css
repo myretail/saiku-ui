@@ -192,6 +192,9 @@ textarea, select {
 #toolbar ul li a.open_query {
     background-position: -1628px 5px;
 }
+#toolbar ul li a.schema_designer {
+    background: url(../../../images/src/main_toolbar_schema_designer.png) no-repeat center;
+}
 #toolbar ul li a.logout {
     background-position: -1776px 5px;
 }
@@ -1944,6 +1947,82 @@ form, input {
 form {
     width: 300px;
 }*/
+
+/* Schema Designer */
+
+.connection_form {
+    max-width: 255px;
+    box-sizing: border-box;
+}
+
+.connection_form label {
+    display: inline-block;
+    width: 75px;
+    text-align: right;
+}
+
+.connection_form input[type="text"],
+.connection_form input[type="password"] {
+    width: 170px;
+    margin-left: 5px;
+}
+
+.connection_form button {
+    float: right;
+    cursor: pointer;
+}
+
+.database_list > li.database > a,
+.schema_list > li.schema > a {
+    color: #999;
+    text-decoration: none;
+}
+
+.database_list > li.database > a:hover,
+.schema_list > li.schema > a:hover {
+    text-decoration: underline;
+}
+
+.database_list > li.database.selected > a,
+.schema_list > li.schema.selected > a {
+    color: #000;
+    font-weight: bold;
+}
+
+.table_list {
+    margin: 0 auto;
+    width: auto;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.dbtable {
+    display: inline-block;
+    padding: 5px;
+    white-space: nowrap;
+}
+
+.table_wrapper {
+    white-space: nowrap;
+    vertical-align: top;
+    display: inline-block;
+    padding:5px;
+}
+
+.table_wrapper > table {
+    float: left;
+    width: 148px !important;
+    border: 1px solid #c8c8c8 !important;
+    table-layout: fixed;
+    border-radius: 5px;
+}
+
+.table_wrapper > table  th {
+    background-color: #98bfda;
+}
+
+/* begin delete this block */
+
 .conn_forms label {
     display: inline-block; width: 70px; text-align: right;
 }
@@ -1968,6 +2047,9 @@ form {
 .conn_forms input:focus {
     border: 2px solid #900;
 }
+
+/* end delete this block */
+
 .keyrow label{
 width:90px !important;
 }
@@ -2048,7 +2130,7 @@ width:70px !important;
     white-space: nowrap;
     width:auto;
 }
-.dbtable{
+/*.dbtable{
     white-space: nowrap;
     -moz-border-radius: 15px;
     border-radius: 15px;
@@ -2056,9 +2138,9 @@ width:70px !important;
     display: inline-block;
     padding:5px;
 
-}
+}*/
 .tablewrapper{
-    white-space: nowrap; /* this does the trick */
+    white-space: nowrap;
     -moz-border-radius: 15px;
     border-radius: 15px;
     vertical-align: top;
