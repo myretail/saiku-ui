@@ -30,7 +30,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link rel="stylesheet" href="js/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="js/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
 
   </head>
 
@@ -369,7 +369,7 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="page-header">市场集中度</h1>
+            <h1 class="page-header"></h1>
           </div>
           <!-- /.col-lg-12 -->
         </div>
@@ -378,67 +378,112 @@
           <div class="col-lg-12">
             <div class="panel panel-default">
               <div class="panel-heading">
-                查询
+                市场集中度
               </div>
+
+              <!-- .panel-heading -->
               <div class="panel-body">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <form role="form">
-                      <div class="form-group">
-                        <label>范围：</label>
-                        <label class="checkbox-inline">
-                          <input type="checkbox">自营
-                        </label>
-                        <label class="checkbox-inline">
-                          <input type="checkbox">POP
-                        </label>
+                <div class="panel-group" id="accordion">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">查询</a>
+                      </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <form role="form">
+                              <div class="form-group">
+                                <label>范围：</label>
+                                <label class="checkbox-inline">
+                                  <input type="checkbox">自营
+                                </label>
+                                <label class="checkbox-inline">
+                                  <input type="checkbox">POP
+                                </label>
+
+                              </div>
+                              <div class="form-group">
+                                <label>组织:</label>
+                                <select class="form-control">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                              </div>
+
+                              <div class="form-group">
+                                <label>区域：</label>
+                                <input class="form-control">
+                                <p class="help-block">请选择地区。</p>
+                              </div>
+
+                              <div class="form-group">
+                                <label>商品:</label>
+                                <select class="form-control">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                              </div>
+
+                              <div class="form-group">
+                                <label>日期:</label>
+                                <div id="reportrange"  style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                  <span></span> <b class="caret"></b>
+                                </div>
+                              </div>
+
+                              <button type="submit" class="btn btn-default">查询</button>
+                              <button type="reset" class="btn btn-default">取消</button>
+
+                            </form>
+                          </div>
+
+                        </div>
+                        <!-- /.row (nested) -->
 
                       </div>
-                      <div class="form-group">
-                        <label>组织:</label>
-                        <select class="form-control">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select>
-                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">引言</a>
+                      </h4>
+                    </div>
 
-                      <div class="form-group">
-                        <label>区域：</label>
-                        <input class="form-control">
-                        <p class="help-block">请选择地区。</p>
-                      </div>
+                    <div class="panel-body">
+                      截止   ，根据 范围内来自 的数据显示，在    域内__________、 __________ 的预测销量为100万台，整体未来销售走势良好。
+                    </div>
 
-                      <div class="form-group">
-                        <label>商品:</label>
-                        <select class="form-control">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select>
-                      </div>
-
-                      <div class="form-group">
-                        <label>日期:</label>
-                        <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="" />
-                      </div>
-
-                      <button type="submit" class="btn btn-default">查询</button>
-                      <button type="reset" class="btn btn-default">取消</button>
-                    </form>
                   </div>
 
                 </div>
-                <!-- /.row (nested) -->
+
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    分析
+                  </div>
+                  <div class="panel-body">
+
+                  </div>
+                  <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
               </div>
-              <!-- /.panel-body -->
             </div>
             <!-- /.panel -->
           </div>
+          <!-- .panel-body -->
+
           <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
@@ -454,8 +499,9 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script src="js/bootstrap-datetimepicker.min.js"></script>
-    <script src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/plugins/bootstrap-daterangepicker/moment.js"></script>
+    <script src="js/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- <script src="js/plugins/bootstrap-daterangepicker/bootstrap-datetimepicker.zh-CN.js"></script> -->
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
