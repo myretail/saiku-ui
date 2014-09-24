@@ -32,6 +32,7 @@ $(function() {
     var cb = function(start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
         $('#reportrange span').html(start.format('YYYY-MM-D') + ' - ' + end.format('YYYY-MM-D'));
+        $('#reportrange2 span').html(start.format('YYYY-MM-D') + ' - ' + end.format('YYYY-MM-D'));
         //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
     };
 
@@ -54,7 +55,7 @@ $(function() {
             '本月': [moment().startOf('month'), moment().endOf('month')],
             '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        opens: 'left',
+        opens: 'right',
         buttonClasses: ['btn btn-default'],
         applyClass: 'btn-small btn-primary',
         cancelClass: 'btn-small',
@@ -87,8 +88,10 @@ $(function() {
     };
 
     $('#reportrange span').html(moment().subtract(29, 'days').format(' YYYY-MM-D') + ' - ' + moment().format('YYYY-MM-D'));
+    $('#reportrange2 span').html(moment().subtract(29, 'days').format(' YYYY-MM-D') + ' - ' + moment().format('YYYY-MM-D'));
 
     $('#reportrange').daterangepicker(optionSet1, cb);
+    $('#reportrange2').daterangepicker(optionSet1, cb);
 
     $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
     $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
