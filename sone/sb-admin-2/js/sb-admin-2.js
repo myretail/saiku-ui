@@ -116,5 +116,12 @@ $(function() {
         $('#reportrange').data('daterangepicker').remove();
     });
 
+    //Menu
+    $("#menu").menu();
+    $("#menuArea").menu();
+    $("#menuProd").menu();
+    $("#menuDept2").menu();
+    $("#menuArea2").menu();
+    $("#menuProd2").menu();
 
 });
