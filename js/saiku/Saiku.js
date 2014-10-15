@@ -77,6 +77,44 @@ var Saiku = {
             console.error(item);
         }
     },
+    loadCSS: function(href, media) {
+        var cssNode = window.document.createElement('link'),
+            ref = window.document.getElementsByTagName('script')[0];
+
+        cssNode.rel = 'stylesheet';
+        cssNode.href = href;
+
+        // Temporarily, set media to something non-matching to 
+        // ensure it'll fetch without blocking render
+        cssNode.media = 'only x';
+
+        // Inject link
+        ref.parentNode.insertBefore(cssNode, ref);
+
+        // Set media back to `all` so that the 
+        // stylesheet applies once it loads
+        setTimeout(function() {            
+            cssNode.media = media || 'all';
+        });
+
+        return cssNode;
+    },
+    loadJS: function(src, callback) {
+        var scriptNode = window.document.createElement('script'),
+            ref = window.document.getElementsByTagName('script')[0];
+
+        scriptNode.src = src;
+
+        // Inject script
+        ref.parentNode.insertBefore(scriptNode, ref);
+
+        // if callback...
+        if (callback && typeof(callback) === 'function') {
+            scriptNode.onload = callback;
+        }
+
+        return scriptNode;
+    },
     URLParams: {
         buildValue: function(value) {
             if (/^\s*$/.test(value))           { return null; }

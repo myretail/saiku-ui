@@ -1,5 +1,5 @@
-/*  
- *   Copyright 2012 OSBI Ltd
+/*
+ *   Copyright 2014 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,13 +13,14 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
- 
+
+
 /**
- * The save query dialog
+ * The delete query confirmation dialog
  */
-var OpenDialog = Modal.extend({
+var MoveRepositoryObject = Modal.extend({
     type: "save",
-    closeText: "Open",
+    closeText: "Move",
 
     events: {
         'click': 'select_root_folder', /* select root folder */
@@ -29,12 +30,12 @@ var OpenDialog = Modal.extend({
         'click li.folder': 'toggle_folder',
         'keyup .search_file' : 'search_file',
         'click .cancel_search' : 'cancel_search',
-        'click .export_btn' : 'export_zip', 
+        'click .export_btn' : 'export_zip',
         'change .file' : 'select_file'
     },
-    
+
     buttons: [
-        { id: "test", text: "Open", method: "open_query" },
+        { id: "test", text: "Move", method: "open_query" },
         { text: "Cancel", method: "close" }
     ],
 
@@ -42,22 +43,16 @@ var OpenDialog = Modal.extend({
         // Append events
         var self = this;
         var name = "";
-        this.message =  "<br/><b><div class='query_name'><span class='i18n'>Please select a file.....</span></div></b><br/><div class='RepositoryObjects'>Loading....</div>" +
-                        "<br>" +
-                        '<div style="height:25px; line-height:25px;"><b><span class="i18n">Search:</span></b> &nbsp;' +
-                        ' <span class="search"><input type="text" class="search_file"></input><span class="cancel_search"></span></span></div>';
+        this.movefolder = args.query;
+        this.success = args.success;
 
-        if (Settings.ALLOW_IMPORT_EXPORT) {
-            this.message += "<span class='export_zip'> </span> <b><span class='i18n'>Import or Export Files for Folder</span>: </b> <span class='i18n zip_folder'>< Select Folder... ></span>" +
-                            " &nbsp; <input type='submit' value='Export' class='export_btn' disabled /><br/><br />" +
-                            "<br /><form id='importForm' target='_blank' method='POST' enctype='multipart/form-data'>" +
-                            "<input type='hidden' name='directory' class='directory'/>" +
-                            "<input type='file' name='file' class='file'/>" +
-                            "<input type='submit' value='Import' class='import_btn' disabled />" +
-                            "</form>";
-        }
+        this.message =  "<br/><b><div class='query_name'><span class='i18n'>Please select a folder.....</span></div></b><br/><div class='RepositoryObjects'>Loading....</div>" +
+            "<br>" +
+            '<div style="height:25px; line-height:25px;"><b><span class="i18n">Search:</span></b> &nbsp;' +
+            ' <span class="search"><input type="text" class="search_file"></input><span class="cancel_search"></span></span></div>';
+
         _.extend(this.options, {
-            title: "Open"
+            title: "Move"
         });
 
         this.selected_folder = null;
@@ -80,24 +75,25 @@ var OpenDialog = Modal.extend({
 
 
         // Maintain `this`
-        _.bindAll( this, "close", "toggle_folder", "select_name", "populate" , "cancel_search", "export_zip", "select_folder", "select_file");
+        _.bindAll( this, "populate", "toggle_folder", "select_name", "select_file", "select_folder", "open_query");
 
-    
+
     },
-
     populate: function( repository ) {
         var self = this;
         $( this.el ).find( '.RepositoryObjects' ).html(
             _.template( $( '#template-repository-objects' ).html( ) )( {
                 repoObjects: repository
-            } ) 
+            } )
         );
 
         self.queries = {};
         function getQueries( entries ) {
             _.forEach( entries, function( entry ) {
-                self.queries[ entry.path ] = entry;
-                if( entry.type === 'FOLDER' ) {
+                if(entry.type === 'FOLDER') {
+                    self.queries[ entry.path ] = entry;
+                //}
+                //if( entry.type === 'FOLDER' ) {
                     getQueries( entry.repoObjects );
                 }
             } );
@@ -111,7 +107,6 @@ var OpenDialog = Modal.extend({
             this.unselect_current_selected_folder( );
         }
     },
-
     toggle_folder: function( event ) {
         var $target = $( event.currentTarget );
         this.unselect_current_selected_folder( );
@@ -127,6 +122,7 @@ var OpenDialog = Modal.extend({
         }
 
         this.select_folder();
+        this.select_name(event);
         return false;
     },
 
@@ -145,52 +141,6 @@ var OpenDialog = Modal.extend({
     unselect_current_selected_folder: function( ) {
         $( this.el ).find( '.selected' ).removeClass( 'selected' );
     },
-
-    // XXX - duplicaten from OpenQuery
-    search_file: function(event) {
-        var filter = $(this.el).find('.search_file').val().toLowerCase();
-        var isEmpty = (typeof filter == "undefined" || filter === "" || filter === null);
-        if (isEmpty || event.which == 27 || event.which == 9) {
-            this.cancel_search();
-        } else {
-            if ($(this.el).find('.search_file').val()) {
-                $(this.el).find('.cancel_search').show();
-            } else {
-                $(this.el).find('.cancel_search').hide();
-            }
-            $(this.el).find('li.query').removeClass('hide');
-            $(this.el).find('li.query a').filter(function (index) { 
-                return $(this).text().toLowerCase().indexOf(filter) == -1; 
-            }).parent().addClass('hide');
-            $(this.el).find('li.folder').addClass('hide');
-            $(this.el).find('li.query').not('.hide').parents('li.folder').removeClass('hide');
-            //$(this.el).find( 'li.folder .folder_content').not(':has(.query:visible)').parent().addClass('hide');
-
-            //not(':contains("' + filter + '")').parent().hide();
-            $(this.el).find( 'li.folder .folder_row' ).find('.sprite').removeClass( 'collapsed' );
-            $(this.el).find( 'li.folder .folder_content' ).removeClass('hide');
-        }
-        return false;
-    },
-    cancel_search: function(event) {
-        $(this.el).find('input.search_file').val('');
-        $(this.el).find('.cancel_search').hide();
-        $(this.el).find('li.query, li.folder').removeClass('hide');
-        $(this.el).find( '.folder_row' ).find('.sprite').addClass( 'collapsed' );
-        $(this.el).find( 'li.folder .folder_content' ).addClass('hide');
-        $(this.el).find('.search_file').val('').focus();
-        $(this.el).find('.cancel_search').hide();
-
-    },
-
-    export_zip: function(event) {
-        var file = this.selected_folder;
-        if (typeof file != "undefined" && file !== "") {
-            var url = Settings.REST_URL + (new RepositoryZipExport({ directory : file })).url();
-            window.open(url + "?directory=" + file + "&type=saiku");
-        }
-    },
-
     select_folder: function() {
         var foldersSelected = $( this.el ).find( '.selected' );
         var file = foldersSelected.length > 0 ? foldersSelected.children('a').attr('href').replace('#','') : null;
@@ -205,18 +155,18 @@ var OpenDialog = Modal.extend({
             this.select_file();
         } else {
             $(this.el).find('.import_btn, .export_btn').attr('disabled', 'true');
-        }        
+        }
 
     },
 
     select_file: function() {
-            var form = $('#importForm');
-            var filename = form.find('.file').val();
-            if (typeof filename != "undefined" && filename !== "" && filename !== null && this.selected_folder !== null) {
-                $(this.el).find('.import_btn').removeAttr('disabled');
-            } else {
-                $(this.el).find('.import_btn').attr('disabled', 'true');
-            }
+        var form = $('#importForm');
+        var filename = form.find('.file').val();
+        if (typeof filename != "undefined" && filename !== "" && filename !== null && this.selected_folder !== null) {
+            $(this.el).find('.import_btn').removeAttr('disabled');
+        } else {
+            $(this.el).find('.import_btn').attr('disabled', 'true');
+        }
     },
 
     open_query: function(event) {
@@ -227,19 +177,25 @@ var OpenDialog = Modal.extend({
             file = $currentTarget.find( 'a' ).attr('href').replace('#','');
         }
 
-        var selected_query = new SavedQuery({ file: file });
-        this.close();
-        Saiku.ui.block("Opening query...");
-        var item = this.queries[file];
-                var params = _.extend({ 
-                        file: file,
-                        formatter: Settings.CELLSET_FORMATTER
-                    }, Settings.PARAMS);
+        var that= this;
+        var picture_entity = new MoveObject;
+        picture_entity.save({source: this.movefolder.get("file"), target: file}, {success: function(){
+            that.close();
+            that.success();
+        }});
 
-        var query = new Query(params,{ name: file  });
-        var tab = Saiku.tabs.add(new Workspace({ query: query, item: item }));
 
         event.preventDefault();
         return false;
     }
+
+
+
+
+});
+
+var MoveObject = Backbone.Model.extend({
+    url: function(){
+    return "api/repository/resource/move";
+}
 });
